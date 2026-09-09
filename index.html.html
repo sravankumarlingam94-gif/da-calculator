@@ -123,79 +123,6 @@ button.primary{border-color:var(--amber);background:var(--amber);color:#221703;
 button.primary:hover{background:#ffc45f;border-color:#ffc45f}
 button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
-/* pay scale reference */
-.scaleref{margin-top:16px}
-.scaleref summary{padding:12px 0}
-.masterline{font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7;
-  word-break:break-word;border-left:2px solid var(--line2);padding-left:12px;margin:4px 0 16px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.chip{border:1px solid var(--line2);border-radius:8px;background:#0D1725;padding:6px 9px;
-  font-family:var(--mono);font-size:12px;color:var(--ink);white-space:nowrap}
-.chip i{font-style:normal;color:var(--dim);font-size:10.5px;margin-right:5px}
-.chip.used{border-color:var(--amber);background:var(--amber-soft);color:var(--amber)}
-.chip.used i{color:var(--amber)}
-.chiplegend{font-size:12px;color:var(--dim);margin-bottom:10px}
-.reftbl td.g{font-family:var(--sans);color:var(--muted)}
-.reftbl tr.here td{background:var(--amber-soft)}
-.reftbl tr.here td:first-child{color:var(--amber);font-weight:600}
-.pline{display:block!important}
-.plhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:5px}
-.plhead span{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.plhead em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--dim)}
-.pline select{padding:8px 10px;font-size:13px;border-radius:9px}
-.pline input{padding:8px 10px;font-size:13px;border-radius:9px}
-/* the DA strip sits above the pay strip; both run the same twenty months */
-.striplab{font-size:11.5px;color:var(--dim);margin:0 0 5px}
-.dabar{display:flex;gap:3px;height:34px;border-radius:10px;overflow:hidden;margin-bottom:12px}
-.daseg{display:flex;flex-direction:column;justify-content:center;align-items:center;
-  padding:0 6px;min-width:0;overflow:hidden;border:1px solid var(--line2);background:#101A28}
-.daseg b{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--green);white-space:nowrap}
-.daseg span{font-family:var(--mono);font-size:9.5px;color:var(--dim);white-space:nowrap}
-.cut{margin-top:20px}
-.cut table{margin-top:10px}
-.cut td.mo{font-family:var(--sans)}
-.cut tbody tr td:nth-child(2){color:var(--amber)}
-.cut tbody tr td:nth-child(3){color:var(--green)}
-@media (max-width:700px){ .dabar{flex-direction:column;height:auto}
-  .daseg{flex-direction:row;justify-content:space-between;padding:8px 12px;border-radius:8px} }
-
-/* plain-language pay timeline */
-.tl{margin-top:18px}
-.tlbar{display:flex;gap:3px;margin-bottom:16px;height:44px;border-radius:10px;overflow:hidden}
-.tlseg{display:flex;flex-direction:column;justify-content:center;align-items:center;
-  padding:0 6px;min-width:0;overflow:hidden;background:#16233A;border:1px solid var(--line2)}
-.tlseg b{font-family:var(--mono);font-size:12.5px;font-weight:600;white-space:nowrap}
-.tlseg span{font-family:var(--mono);font-size:10px;color:var(--dim);white-space:nowrap}
-.tlseg.c0{background:rgba(79,176,255,.14);border-color:rgba(79,176,255,.45)}
-.tlseg.c0 b{color:#8CCBFF}
-.tlseg.c1{background:rgba(167,139,250,.14);border-color:rgba(167,139,250,.45)}
-.tlseg.c1 b{color:#C4B0FF}
-.tlseg.c2{background:rgba(255,180,58,.14);border-color:rgba(255,180,58,.45)}
-.tlseg.c2 b{color:var(--amber)}
-.tlseg.c3{background:rgba(63,220,150,.14);border-color:rgba(63,220,150,.45)}
-.tlseg.c3 b{color:var(--green)}
-.tlseg.c4{background:rgba(225,86,110,.14);border-color:rgba(225,86,110,.45)}
-.tlseg.c4 b{color:#F58098}
-
-.tlrow{display:grid;grid-template-columns:20px 1fr auto;gap:12px;align-items:start;
-  padding:12px 0;border-top:1px solid var(--line)}
-.tlrow:first-of-type{border-top:none}
-.dot{width:11px;height:11px;border-radius:50%;margin-top:5px;background:var(--line2)}
-.dot.c0{background:#4FB0FF} .dot.c1{background:var(--violet)} .dot.c2{background:var(--amber)}
-.dot.c3{background:var(--green)} .dot.c4{background:#E1566E}
-.tlwhen{font-size:14.5px;font-weight:600}
-.tlwhy{font-size:12.5px;color:var(--muted);margin-top:2px}
-.tlwhy b{color:var(--green);font-weight:600}
-.tlamt{text-align:right;white-space:nowrap}
-.tlamt b{display:block;font-family:var(--mono);font-size:17px;font-weight:600}
-.tlamt span{display:block;font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:2px}
-@media (max-width:700px){
-  .tlbar{flex-direction:column;height:auto}
-  .tlseg{flex-direction:row;justify-content:space-between;padding:9px 12px;border-radius:8px}
-}
-.rowtag{grid-column:1 / -1;font-size:11px;margin-top:-2px}
-.rowtag.auto{color:var(--violet)}
-.rowtag.hand{color:var(--amber)}
 .warnbox{display:none;margin-top:14px;border:1px solid rgba(255,180,58,.4);
   background:rgba(255,180,58,.07);border-radius:12px;padding:14px 16px}
 .warnbox.show{display:block}
@@ -214,7 +141,13 @@ button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .pnum{font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.04em}
 .pfrom{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:2px}
 .pdiff{font-family:var(--mono);font-size:12.5px;color:var(--green);margin:6px 0 12px}
-.pline{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);
+.pline{display:block;padding:9px 0;border-bottom:1px dashed var(--line)}
+.pline:last-of-type{border-bottom:none}
+.plhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:5px}
+.plhead span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.plhead em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.pline select,.pline input{padding:8px 10px;font-size:13px;border-radius:9px}
+.plineOLD{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);
   font-size:12.5px;padding:6px 0;border-top:1px dashed var(--line)}
 .pline span{color:var(--muted)}
 .pout{margin-top:10px;border-top:1px solid var(--line2);padding-top:10px;
@@ -426,47 +359,19 @@ footer b{color:var(--muted);font-weight:600}
       <div class="tools">
         <button class="act" id="btnManual" aria-pressed="false">Type basic pay instead of picking it</button>
       </div>
-
-      <details class="scaleref">
-        <summary id="sumStages">Show every stage of this scale</summary>
-        <p class="chiplegend" id="chipLegend"></p>
-        <div class="chips" id="stageChips"></div>
-      </details>
-
-      <details class="scaleref">
-        <summary id="sumAll">Show all the scales in this Annexure</summary>
-        <div class="tblwrap">
-          <table class="reftbl">
-            <thead><tr><th>Grade</th><th>Ordinary</th><th>SGP</th><th>SAPP-IA</th><th>SAPP-II</th></tr></thead>
-            <tbody id="allScales"></tbody>
-          </table>
-        </div>
-      </details>
-
-      <details class="scaleref">
-        <summary>Show the Single Master Scale</summary>
-        <p class="chiplegend">One master scale applies to both categories under the Revised Pay Scales, 2022. Every grade scale below is a stretch of it.</p>
-        <div class="masterline" id="masterLine"></div>
-      </details>
     </div>
   </section>
 
   <section>
     <div class="shead"><h2>Basic pay and the dates it changed</h2><em id="rowsHint">One line per change</em></div>
     <div class="card">
-      <div class="row two" style="margin-bottom:16px">
-        <label class="f"><span>Annual increment month</span><select id="incMonth"></select></label>
-        <label class="f"><span>Stages gained at each increment</span><select id="incStages"></select></label>
-      </div>
-      <p class="hint" id="autoHint" style="margin-top:-6px;margin-bottom:16px"></p>
-
       <div class="phead">
         <div>Effective from</div><div>Basic pay</div><div style="text-align:right">Runs for</div><div></div>
       </div>
       <div id="payRows"></div>
       <div class="tools">
         <button class="act" id="btnAdd">Add a pay change</button>
-        <button class="act" id="btnReAuto">Refill the later lines</button>
+        <button class="act" id="btnQuick">Fill from a yearly increment</button>
       </div>
       <p class="hint">Add a line for every date the basic pay changed between January 2025 and August 2026 — the annual increment, an SGP or SAPP fixation with more than one increment, a promotion, a stagnation increment. Nothing is assumed; whatever you enter is what gets counted, month by month.</p>
       <div class="warnbox" id="warnbox">
@@ -501,32 +406,6 @@ footer b{color:var(--muted);font-weight:600}
         <div class="pout"><span>Arrear for this period</span><b id="o3">₹0</b></div>
       </div>
     </div>
-    <div class="card tl" style="margin-top:16px">
-      <div class="shead" style="margin-bottom:10px">
-        <h2 style="font-size:15px">Your pay across the twenty months</h2>
-        <em id="tlSum"></em>
-      </div>
-      <p class="striplab">Dearness Allowance rate — changes on the G.O. dates</p>
-      <div class="dabar" id="daBar"></div>
-      <p class="striplab">Your basic pay — changes on your own dates</p>
-      <div class="tlbar" id="tlBar"></div>
-      <div id="tlRows"></div>
-
-      <div class="cut">
-        <div class="shead" style="margin-bottom:2px">
-          <h2 style="font-size:15px">Where the two cut each other</h2>
-          <em>Every stretch with one basic pay and one DA rate</em>
-        </div>
-        <div class="tblwrap">
-          <table>
-            <thead><tr><th>Months</th><th>Basic pay</th><th>DA rate</th><th>DA drawn</th><th>DA due</th><th>Per month</th><th>Arrear</th></tr></thead>
-            <tbody id="cutRows"></tbody>
-            <tfoot><tr><td colspan="6">Total arrears</td><td id="cutTotal">₹0</td></tr></tfoot>
-          </table>
-        </div>
-      </div>
-    </div>
-
     <div class="tools">
       <button class="act primary" id="btnCalc">Show my DA and arrears</button>
       <button class="act" id="btnPrint">Print or save as PDF</button>
@@ -743,57 +622,6 @@ function fillRange(){
   var r=curRange(), list=between(r[0],r[1]);
   $("range").value="\u20B9"+fmt(r[0])+" \u2013 \u20B9"+fmt(r[1])+"  ("+list.length+" stages)";
   renderRows();
-  renderScaleRef();
-}
-
-/* ================= pay scale reference ================= */
-function renderScaleRef(){
-  var r=curRange(), list=between(r[0],r[1]);
-  var used={};
-  for(var i=0;i<pay.length;i++) if(pay[i].basic) used[Number(pay[i].basic)]=1;
-
-  /* every stage of the scale in hand */
-  $("sumStages").textContent="Show every stage of this scale \u2014 Grade "+
-    $("grade").value+" "+$("stype").value+", "+list.length+" stages";
-  $("chipLegend").textContent="\u20B9"+fmt(r[0])+" to \u20B9"+fmt(r[1])+
-    ". Stages you have entered above are marked.";
-  var box=$("stageChips"); box.innerHTML="";
-  for(i=0;i<list.length;i++){
-    var c=document.createElement("span");
-    c.className="chip"+(used[list[i]]?" used":"");
-    var n=document.createElement("i"); n.textContent=i+1;
-    c.appendChild(n);
-    c.appendChild(document.createTextNode("\u20B9"+fmt(list[i])));
-    box.appendChild(c);
-  }
-
-  /* every grade in the annexure this category uses */
-  var ann = (cat==="wm") ? "Annexure-II, Workmen" : "Annexure-I, Other than Workmen";
-  $("sumAll").textContent="Show all the scales in "+ann;
-  var cols=["Ordinary","SGP","SAPP-IA","SAPP-II","SPP-IA","SPP-II"];
-  var grades=SCALES[cat].grades, tb=$("allScales");
-  tb.innerHTML="";
-  Object.keys(grades).forEach(function(g){
-    var tr=document.createElement("tr");
-    if(g===$("grade").value) tr.className="here";
-    var td0=document.createElement("td"); td0.className="g"; td0.textContent="Grade "+g;
-    tr.appendChild(td0);
-    var row=grades[g], seen=0;
-    for(var k=0;k<cols.length;k++){
-      var rng=row[cols[k]];
-      if(!rng) continue;
-      var td=document.createElement("td");
-      td.textContent="\u20B9"+fmt(rng[0])+" \u2013 \u20B9"+fmt(rng[1]);
-      tr.appendChild(td); seen++;
-    }
-    while(seen<4){ tr.appendChild(document.createElement("td")); seen++; }
-    tb.appendChild(tr);
-  });
-
-  /* the master scale, written the way the G.O. writes it */
-  var parts=[];
-  for(i=0;i<MASTER.length;i++) parts.push(i%2 ? MASTER[i] : fmt(MASTER[i]));
-  $("masterLine").textContent="\u20B9"+parts.join(" \u2013 ");
 }
 
 /* ================= the pay history rows ================= */
@@ -837,7 +665,6 @@ function renderRows(){
           if(key(yy,mm)<key(2025,2)){ yy=2025; mm=2; }
           if(key(yy,mm)>key(2026,8)){ yy=2026; mm=8; }
           p.y=yy; p.m=mm;
-          if(p.auto) p.edited=true;
           renderRows(); live();
         }
         ms.addEventListener("change",fixDate);
@@ -852,10 +679,7 @@ function renderRows(){
         var inp=document.createElement("input");
         inp.type="number"; inp.min="0"; inp.step="5"; inp.placeholder="Basic pay";
         inp.value=p.basic;
-        inp.addEventListener("input",function(){
-          p.basic=inp.value;
-          if(p.fixed) applyAuto(); else { if(p.auto) p.edited=true; live(); }
-        });
+        inp.addEventListener("input",function(){ p.basic=inp.value; live(); });
         bc.appendChild(inp);
       } else {
         var sel=document.createElement("select");
@@ -868,10 +692,7 @@ function renderRows(){
         }
         sel.value = (list.indexOf(Number(p.basic))>=0) ? String(p.basic) : "";
         if(sel.value==="") p.basic="";
-        sel.addEventListener("change",function(){
-          p.basic=sel.value;
-          if(p.fixed) applyAuto(); else { if(p.auto) p.edited=true; renderRows(); live(); }
-        });
+        sel.addEventListener("change",function(){ p.basic=sel.value; live(); });
         bc.appendChild(sel);
       }
       row.appendChild(bc);
@@ -881,14 +702,6 @@ function renderRows(){
       var n=spanOf(idx);
       sp.textContent = n ? n+(n===1?" month":" months") : "\u2014";
       row.appendChild(sp);
-
-      /* where this line came from */
-      if(!p.fixed && p.auto){
-        var tag=document.createElement("div");
-        tag.className="rowtag "+(p.edited?"hand":"auto");
-        tag.textContent = p.edited ? "Changed by hand" : "Written from your increment month";
-        row.appendChild(tag);
-      }
 
       /* delete */
       var del=document.createElement("button");
@@ -918,87 +731,26 @@ function addRow(){
 }
 
 /* quick start for the ordinary case: one increment a year, one stage each */
-function fillIncControls(){
-  var ms=$("incMonth"); ms.innerHTML="";
-  var none=document.createElement("option");
-  none.value="0"; none.textContent="I will set the lines myself";
-  ms.appendChild(none);
-  for(var i=0;i<12;i++){
-    var o=document.createElement("option"); o.value=i+1; o.textContent=MONTHS[i]; ms.appendChild(o);
-  }
-  ms.value="0";
-  var ss=$("incStages"); ss.innerHTML="";
-  [[1,"One stage — the usual annual increment"],
-   [2,"Two stages — SGP, SAPP or a promotion year"],
-   [3,"Three stages"],
-   [4,"Four stages"]].forEach(function(p){
-    var o=document.createElement("option"); o.value=p[0]; o.textContent=p[1]; ss.appendChild(o);
-  });
-  ss.value="1";
-}
-
-/* dates inside the window on which an annual increment falls */
-function incDates(){
-  var incM=Number($("incMonth").value||0), out=[];
-  if(!incM) return out;
-  [2025,2026].forEach(function(y){
-    var k=key(y,incM);
-    if(k>=key(2025,2) && k<=key(2026,8)) out.push({y:y,m:incM});
-  });
-  return out;
-}
-
-/* build the later lines from the January 2025 pay, leaving anything you changed alone */
-function applyAuto(){
-  var incM=Number($("incMonth").value||0);
-  var step=Number($("incStages").value||1);
-  var hint=$("autoHint");
-
-  if(!incM){
-    hint.textContent="Pick your increment month and the later lines are written for you. Leave it as it is to enter every line yourself.";
-    renderRows(); live(); return;
-  }
-
-  var dates=incDates();
+function quickFill(){
+  var mth=prompt("Which month is your annual increment? Type 1 for January up to 12 for December.","1");
+  if(mth===null) return;
+  var incM=Math.max(1,Math.min(12,Number(mth)||1));
   var r=curRange(), list=between(r[0],r[1]);
   var base=Number(pay[0].basic||0);
   var start=list.indexOf(base);
 
-  /* drop earlier auto lines that you have not touched */
-  pay=pay.filter(function(p){ return p.fixed || !p.auto || p.edited; });
-
-  for(var i=0;i<dates.length;i++){
-    var d=dates[i], found=null;
-    for(var j=0;j<pay.length;j++)
-      if(!pay[j].fixed && pay[j].y===d.y && pay[j].m===d.m){ found=pay[j]; break; }
-    if(found) continue;
-    var val="";
-    if(start>=0) val=String(list[Math.min(list.length-1, start+step*(i+1))]);
-    pay.push({y:d.y,m:d.m,basic:val,fixed:false,auto:true,edited:false});
+  pay=[{y:2025,m:1,basic:pay[0].basic,fixed:true}];
+  [2025,2026].forEach(function(y){
+    if(key(y,incM)>=key(2025,2) && key(y,incM)<=key(2026,8))
+      pay.push({y:y,m:incM,basic:"",fixed:false});
+  });
+  if(start>=0){
+    for(var i=1;i<pay.length;i++)
+      pay[i].basic = String(list[Math.min(list.length-1,start+i)]);
   }
-
-  /* keep untouched auto lines in step with the January figure */
-  var n=0;
-  sortPay();
-  for(j=0;j<pay.length;j++){
-    var p=pay[j];
-    if(p.fixed || !p.auto || p.edited) continue;
-    n++;
-    if(start>=0) p.basic=String(list[Math.min(list.length-1, start+step*n)]);
-  }
-
-  hint.textContent = base
-    ? "The lines below are written from your "+MONTHS[incM-1]+" increment, "+step+
-      (step===1?" stage":" stages")+" each time. Change any line and it stays as you set it."
-    : "Enter the January 2025 basic pay in the first line and the rest fill themselves.";
-
   renderRows(); live();
 }
 
-function reAuto(){
-  for(var i=0;i<pay.length;i++) if(pay[i].auto) pay[i].edited=false;
-  applyAuto();
-}
 /* ================= the month ledger ================= */
 function basicAt(y,m){
   var k=key(y,m), v=0;
@@ -1051,7 +803,6 @@ function sanctionSplit(rows){
 
 /* ================= live view ================= */
 function live(){
-  if($("stageChips")) renderScaleRef();
   var rows=buildLedger(), runs=groupRuns(rows), tot=[0,0,0,0];
   for(var i=0;i<rows.length;i++) tot[rows[i].p]+=rows[i].diff;
   var r0=curRange(), list=between(r0[0],r0[1]);
@@ -1076,7 +827,6 @@ function live(){
           ctl=document.createElement("input");
           ctl.type="number"; ctl.min="0"; ctl.step="5"; ctl.placeholder="Basic pay";
           ctl.value=rr.basic||"";
-          ctl.addEventListener("change",function(){ setStretch(rr.from[0],rr.from[1],ctl.value); });
         } else {
           ctl=document.createElement("select");
           var ph=document.createElement("option"); ph.value=""; ph.textContent="Select basic pay";
@@ -1088,142 +838,18 @@ function live(){
             ctl.appendChild(o);
           }
           ctl.value = (list.indexOf(Number(rr.basic))>=0) ? String(rr.basic) : "";
-          ctl.addEventListener("change",function(){ setStretch(rr.from[0],rr.from[1],ctl.value); });
         }
+        ctl.addEventListener("change",function(){ setStretch(rr.from[0],rr.from[1],ctl.value); });
         d.appendChild(ctl);
         box.appendChild(d);
       })(run);
     }
     $("o"+p).textContent="\u20B9"+fmt(tot[p]);
   }
-  renderTimeline();
   checkSanity();
 }
 
-/* the same pay history said plainly, month by month */
-function renderTimeline(){
-  var bar=$("tlBar"), list=$("tlRows");
-  if(!bar) return;
-  bar.innerHTML=""; list.innerHTML="";
-  renderDaStrip();
-  renderCut();
-
-  var r0=curRange(), stages=between(r0[0],r0[1]);
-  var incM=Number($("incMonth").value||0);
-  var filled=0;
-
-  for(var i=0;i<pay.length;i++){
-    var p=pay[i], months=spanOf(i);
-    if(months<=0) continue;
-    if(p.basic) filled+=months;
-
-    var endK=key(p.y,p.m)+months-1;
-    var ey=Math.floor((endK-1)/12), em=endK-ey*12; if(em===0){ em=12; ey--; }
-    var cls="c"+(i%5);
-    var range=stamp(p.y,p.m)+" \u2013 "+stamp(ey,em);
-
-    /* the bar across the top, each block as wide as the months it covers */
-    var seg=document.createElement("div");
-    seg.className="tlseg "+cls;
-    seg.style.flex=months;
-    var sb=document.createElement("b");
-    sb.textContent = p.basic ? "\u20B9"+fmt(p.basic) : "\u2014";
-    var ss=document.createElement("span");
-    ss.textContent=months+(months===1?" month":" months");
-    seg.appendChild(sb); seg.appendChild(ss);
-    seg.title=range;
-    bar.appendChild(seg);
-
-    /* the sentence under it */
-    var row=document.createElement("div"); row.className="tlrow";
-    var dot=document.createElement("div"); dot.className="dot "+cls;
-    row.appendChild(dot);
-
-    var mid=document.createElement("div");
-    var when=document.createElement("div"); when.className="tlwhen";
-    when.textContent = (i===0)
-      ? "From January 2025 you drew"
-      : "From "+MONTHS[p.m-1]+" "+p.y+" you drew";
-    mid.appendChild(when);
-
-    var why=document.createElement("div"); why.className="tlwhy";
-    if(i===0){
-      why.textContent="This is where the arrears begin, whatever you were drawing before.";
-    } else {
-      var prev=Number(pay[i-1].basic||0), now=Number(p.basic||0);
-      var bits=[];
-      if(prev&&now&&now>prev){
-        var ia=stages.indexOf(prev), ib=stages.indexOf(now);
-        var st=(ia>=0&&ib>=0)?(ib-ia):0;
-        bits.push("Pay rose by <b>\u20B9"+fmt(now-prev)+"</b>"+
-          (st?" \u2014 "+st+(st===1?" stage":" stages"):""));
-      } else if(prev&&now&&now===prev){
-        bits.push("Pay stayed the same");
-      }
-      if(incM && p.m===incM) bits.push("your "+MONTHS[incM-1]+" increment");
-      else if(prev&&now&&now>prev) bits.push("not your usual increment month");
-      why.innerHTML=bits.join(", ")+".";
-    }
-    mid.appendChild(why);
-    row.appendChild(mid);
-
-    var amt=document.createElement("div"); amt.className="tlamt";
-    var ab=document.createElement("b");
-    ab.textContent = p.basic ? "\u20B9"+fmt(p.basic) : "\u2014";
-    var as=document.createElement("span");
-    as.textContent=range+"  \u00B7  "+months+(months===1?" month":" months");
-    amt.appendChild(ab); amt.appendChild(as);
-    row.appendChild(amt);
-
-    list.appendChild(row);
-  }
-
-  $("tlSum").textContent = filled===20
-    ? "All twenty months accounted for"
-    : filled+" of the twenty months have a basic pay so far";
-}
-
-/* the DA rate strip: three blocks, six, six and eight months wide */
-function renderDaStrip(){
-  var bar=$("daBar"); if(!bar) return;
-  bar.innerHTML="";
-  for(var i=0;i<PERIODS.length;i++){
-    var P=PERIODS[i], months=P.last-P.first+1;
-    var seg=document.createElement("div");
-    seg.className="daseg"; seg.style.flex=months;
-    var b=document.createElement("b"); b.textContent=P.rate.toFixed(2)+"%";
-    var sp=document.createElement("span");
-    sp.textContent=stamp(P.year,P.first)+" \u2013 "+stamp(P.year,P.last);
-    seg.appendChild(b); seg.appendChild(sp);
-    seg.title="Difference over 14.07% is "+(P.rate-OLD_RATE).toFixed(2)+"%";
-    bar.appendChild(seg);
-  }
-}
-
-/* one row for every stretch that holds a single basic pay and a single DA rate */
-function renderCut(){
-  var tb=$("cutRows"); if(!tb) return;
-  tb.innerHTML="";
-  var rows=buildLedger(), runs=groupRuns(rows), total=0;
-  for(var i=0;i<runs.length;i++){
-    var r=runs[i];
-    total+=r.amount;
-    var tr=document.createElement("tr");
-    var months=r.months+(r.months===1?" month":" months");
-    tr.innerHTML="<td class=\"mo\">"+stamp(r.from[0],r.from[1])+" \u2013 "+
-      stamp(r.to[0],r.to[1])+"  ("+months+")</td>"+
-      "<td>"+(r.basic?"\u20B9"+fmt(r.basic):"\u2014")+"</td>"+
-      "<td>"+r.rate.toFixed(2)+"%</td>"+
-      "<td>\u20B9"+fmt(Math.round(r.basic*OLD_RATE/100))+"</td>"+
-      "<td>\u20B9"+fmt(Math.round(r.basic*r.rate/100))+"</td>"+
-      "<td>\u20B9"+fmt(r.per)+"</td>"+
-      "<td>\u20B9"+fmt(r.amount)+"</td>";
-    tb.appendChild(tr);
-  }
-  $("cutTotal").textContent="\u20B9"+fmt(total);
-}
-
-/* changing a stretch inside a period card writes back to the pay lines */
+/* a change made in a period card is written back to the pay lines above */
 function setStretch(y,m,val){
   var k=key(y,m), hit=null;
   for(var i=0;i<pay.length;i++)
@@ -1231,12 +857,11 @@ function setStretch(y,m,val){
 
   if(hit){
     hit.basic=String(val||"");
-    if(hit.auto) hit.edited=true;
   } else {
-    /* the stretch began at a DA-rate boundary, so it needs a pay line of its own */
-    pay.push({y:y,m:m,basic:String(val||""),fixed:false,auto:false,edited:true});
+    /* this stretch began at a DA-rate date, so it needs a pay line of its own */
+    pay.push({y:y,m:m,basic:String(val||""),fixed:false});
+    sortPay();
   }
-  sortPay();
   renderRows();
   live();
 }
@@ -1389,9 +1014,7 @@ for(var ci=0;ci<catBtns.length;ci++){
 $("grade").addEventListener("change",function(){ fillTypes(); live(); });
 $("stype").addEventListener("change",function(){ fillRange(); live(); });
 $("btnAdd").addEventListener("click",addRow);
-$("incMonth").addEventListener("change",applyAuto);
-$("incStages").addEventListener("change",reAuto);
-$("btnReAuto").addEventListener("click",reAuto);
+$("btnQuick").addEventListener("click",quickFill);
 $("btnCalc").addEventListener("click",calculate);
 $("btnPrint").addEventListener("click",printAll);
 $("btnPrint2").addEventListener("click",printAll);
@@ -1403,7 +1026,6 @@ $("btnManual").addEventListener("click",function(){
   renderRows(); live();
 });
 
-fillIncControls();
 fillGrades();
 live();
 
