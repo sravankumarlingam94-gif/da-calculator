@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B1119">
+<meta name="description" content="Dearness Allowance and arrears under APGENCO Revised Pay Scales 2022.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DA Calculator">
+<meta name="mobile-web-app-capable" content="yes">
+<title>APGENCO DA and Arrears Calculator — RPS 2022</title>
+<style>
+:root{
+  --bg:#0B1119; --panel:#141E2E; --line:#243349; --line2:#2F4056;
+  --ink:#EAF1FA; --muted:#8DA2BE; --dim:#5F738F;
+  --amber:#FFB43A; --amber-soft:rgba(255,180,58,.14);
+  --green:#3FDC96; --blue:#4FB0FF; --violet:#A78BFA;
+  --mono:ui-monospace,"SF Mono","DejaVu Sans Mono",Menlo,Consolas,monospace;
+  --sans:"Segoe UI",Roboto,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:
+  radial-gradient(1100px 620px at 12% -8%, rgba(79,176,255,.10), transparent 60%),
+  radial-gradient(900px 560px at 92% 4%, rgba(255,180,58,.10), transparent 62%),
+  var(--bg);
+  color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:26px 18px 70px}
+
+.appbar{position:sticky;top:0;z-index:40;display:none;align-items:center;gap:12px;
+  padding:11px 14px;margin:-26px -18px 20px;border-bottom:1px solid var(--line);
+  background:rgba(11,17,25,.92);backdrop-filter:blur(10px);flex-wrap:wrap}
+.appbar.show{display:flex}
+.appbar .msg{flex:1;min-width:220px;font-size:13.5px;color:var(--muted);line-height:1.35}
+.appbar .msg b{color:var(--ink);font-weight:600}
+.appbar button{font:inherit;font-size:13px;padding:8px 15px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--amber);background:var(--amber);color:#221703;font-weight:650;white-space:nowrap}
+.appbar button.ghost{background:transparent;color:var(--muted);border-color:var(--line2);font-weight:400}
+
+.mast{position:relative;border:1px solid var(--line);border-radius:18px;
+  background:linear-gradient(160deg,#16223400,#101A28 65%),var(--panel);padding:26px 26px 22px;overflow:hidden}
+.gridline{position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--amber),var(--blue),transparent);
+  background-size:220% 100%;animation:slide 7s linear infinite;opacity:.85}
+@keyframes slide{0%{background-position:0 0}100%{background-position:220% 0}}
+.toprow{display:flex;justify-content:flex-end;margin-bottom:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
+  color:var(--green);border:1px solid rgba(63,220,150,.35);background:rgba(63,220,150,.08);
+  border-radius:999px;padding:4px 10px}
+.badge.off{color:var(--amber);border-color:rgba(255,180,58,.35);background:rgba(255,180,58,.08)}
+h1{margin:0 0 6px;font-size:clamp(23px,3.5vw,34px);letter-spacing:-.02em;font-weight:650}
+.mast p{margin:0;color:var(--muted);max-width:64ch}
+.refs{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.ref{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:#0E1826}
+.ref b{color:var(--amber);font-weight:600}
+.ladder{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rung{background:#101A28;padding:12px 14px}
+.rung span{display:block;font-size:11.5px;color:var(--dim)}
+.rung strong{display:block;font-family:var(--mono);font-size:20px;font-weight:600;margin-top:3px}
+.rung.now strong{color:var(--amber)}
+.rung small{color:var(--green);font-family:var(--mono);font-size:11.5px}
+
+section{margin-top:26px}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.shead h2{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.shead em{font-style:normal;color:var(--dim);font-size:13px}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:18px}
+
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cat{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:16px 18px;
+  cursor:pointer;text-align:left;color:var(--ink);font:inherit;
+  transition:border-color .18s,background .18s,transform .12s}
+.cat:hover{border-color:var(--line2)}
+.cat:active{transform:translateY(1px)}
+.cat b{display:block;font-size:16px;font-weight:600}
+.cat span{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}
+.cat[aria-pressed="true"]{border-color:var(--amber);
+  background:linear-gradient(180deg,var(--amber-soft),transparent),var(--panel);
+  box-shadow:0 0 0 1px var(--amber) inset}
+.cat[aria-pressed="true"] b{color:var(--amber)}
+
+.row{display:grid;gap:14px}
+.row.two{grid-template-columns:1fr 1fr}
+.row.three{grid-template-columns:1fr 1fr 1fr}
+label.f{display:block}
+label.f > span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+select,input[type=text],input[type=number]{width:100%;padding:11px 12px;border-radius:10px;
+  border:1px solid var(--line2);background:#0D1725;color:var(--ink);font:inherit;
+  font-family:var(--mono);font-size:14px;transition:border-color .16s,box-shadow .16s}
+select:focus,input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,180,58,.16)}
+input[readonly]{color:var(--muted)}
+.hint{font-size:12px;color:var(--dim);margin-top:10px}
+
+/* ---- pay history ---- */
+.phead{display:grid;grid-template-columns:150px 1fr 96px 42px;gap:10px;
+  padding:0 2px 8px;font-size:11.5px;color:var(--dim)}
+.prow{display:grid;grid-template-columns:150px 1fr 96px 42px;gap:10px;align-items:center;
+  padding:9px 2px;border-top:1px solid var(--line)}
+.prow.base .datecell{font-family:var(--mono);font-size:13.5px;color:var(--muted);
+  padding:11px 0;white-space:nowrap}
+.datecell{display:flex;gap:6px}
+.datecell select{padding:10px 8px;font-size:13px}
+.span{font-family:var(--mono);font-size:12.5px;color:var(--dim);text-align:right;white-space:nowrap}
+.del{width:38px;height:38px;border-radius:9px;border:1px solid var(--line2);background:#0F1B2B;
+  color:var(--muted);font:inherit;font-size:17px;line-height:1;cursor:pointer;padding:0}
+.del:hover{border-color:#E2585A;color:#E2585A}
+.del.hidden{visibility:hidden}
+
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button.act{font:inherit;font-size:13.5px;padding:10px 16px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--line2);background:#0F1B2B;color:var(--ink);
+  transition:border-color .16s,background .16s}
+button.act:hover{border-color:var(--amber);background:#132135}
+button.primary{border-color:var(--amber);background:var(--amber);color:#221703;
+  font-weight:650;padding:12px 24px;font-size:15px}
+button.primary:hover{background:#ffc45f;border-color:#ffc45f}
+button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.warnbox{display:none;margin-top:14px;border:1px solid rgba(255,180,58,.4);
+  background:rgba(255,180,58,.07);border-radius:12px;padding:14px 16px}
+.warnbox.show{display:block}
+.warnbox b{display:block;font-size:14px;font-weight:600;color:var(--amber);margin-bottom:6px}
+.warnbox ul{margin:0;padding-left:19px;color:var(--muted);font-size:13.5px;line-height:1.6}
+.warnbox ul b{display:inline;color:var(--ink);font-weight:600;margin:0}
+
+/* ---- three period cards, now read-only ---- */
+.periods{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.period{border:1px solid var(--line);border-radius:14px;background:var(--panel);
+  padding:16px;position:relative;overflow:hidden}
+.period::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.period.p1::after{background:var(--blue)}
+.period.p2::after{background:var(--violet)}
+.period.p3::after{background:var(--amber)}
+.pnum{font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+.pfrom{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:2px}
+.pdiff{font-family:var(--mono);font-size:12.5px;color:var(--green);margin:6px 0 12px}
+.pline{display:block;padding:9px 0;border-bottom:1px dashed var(--line)}
+.pline:last-of-type{border-bottom:none}
+.plhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:5px}
+.plhead span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.plhead em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.pline select,.pline input{padding:8px 10px;font-size:13px;border-radius:9px}
+.plineOLD{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);
+  font-size:12.5px;padding:6px 0;border-top:1px dashed var(--line)}
+.pline span{color:var(--muted)}
+.pout{margin-top:10px;border-top:1px solid var(--line2);padding-top:10px;
+  display:flex;justify-content:space-between;align-items:baseline}
+.pout span{font-size:12px;color:var(--muted)}
+.pout b{font-family:var(--mono);font-size:17px;font-weight:600}
+
+#results{display:none}
+#results.show{display:block}
+.headline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hero{border:1px solid var(--line);border-radius:18px;padding:24px;position:relative;overflow:hidden;
+  background:radial-gradient(700px 240px at 20% 0%,rgba(255,180,58,.13),transparent 70%),var(--panel)}
+.hero.arr{background:radial-gradient(700px 240px at 20% 0%,rgba(63,220,150,.12),transparent 70%),var(--panel)}
+.hero.sum{background:radial-gradient(700px 240px at 20% 0%,rgba(167,139,250,.14),transparent 70%),var(--panel)}
+.sweep{position:absolute;top:0;bottom:0;width:120px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:translateX(-220px)}
+.sweep.run{animation:sweep 1.05s cubic-bezier(.4,0,.2,1) 1}
+@keyframes sweep{0%{transform:translateX(-220px)}100%{transform:translateX(1200px)}}
+.hero .lab{font-size:13px;color:var(--muted)}
+.hero .big{font-family:var(--mono);font-size:clamp(30px,5.5vw,46px);font-weight:650;
+  letter-spacing:-.03em;line-height:1.05;margin:2px 0 6px}
+.hero.gain .big{color:var(--amber)}
+.hero.arr .big{color:var(--green)}
+.hero.sum .big{color:var(--violet)}
+.hero .sub{color:var(--dim);font-size:13px}
+.split{margin-top:16px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.mini{border:1px solid var(--line);border-radius:10px;background:#101A28;padding:11px 13px}
+.mini span{display:block;font-size:11.5px;color:var(--dim)}
+.mini b{display:block;font-family:var(--mono);font-size:19px;font-weight:600;margin-top:2px}
+.arrow{color:var(--dim);font-family:var(--mono);font-size:18px;text-align:center}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.kpi{border:1px solid var(--line);border-radius:12px;background:#101A28;padding:14px}
+.kpi span{display:block;font-size:12px;color:var(--muted)}
+.kpi b{display:block;font-family:var(--mono);font-size:20px;font-weight:600;margin-top:4px}
+
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+thead th{color:var(--muted);font-weight:500;font-size:12px;border-bottom:1px solid var(--line2)}
+tbody td{font-family:var(--mono)}
+tbody td:first-child{font-family:var(--sans)}
+tbody tr.sanc td:first-child{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+tbody tr.sanc td.rate{color:var(--green)}
+tfoot td{font-family:var(--mono);font-weight:650;border-bottom:none;border-top:1px solid var(--line2)}
+tfoot td:first-child{font-family:var(--sans)}
+.tblwrap{overflow-x:auto}
+
+.sched{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}
+.inst{border:1px solid var(--line);border-radius:10px;background:#101A28;padding:10px;text-align:center}
+.inst span{display:block;font-size:11px;color:var(--dim)}
+.inst b{display:block;font-family:var(--mono);font-size:14px;font-weight:600;margin-top:2px}
+
+details{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:#101A28;padding:0 16px}
+summary{cursor:pointer;padding:13px 0;font-size:13.5px;color:var(--muted)}
+details[open] summary{color:var(--ink)}
+details table{margin-bottom:14px}
+
+.note{margin-top:18px;border-left:3px solid var(--line2);padding:2px 0 2px 14px;
+  color:var(--muted);font-size:13px}
+.note b{color:var(--ink);font-weight:600}
+
+.actionbar{position:sticky;bottom:0;z-index:35;display:flex;gap:10px;justify-content:center;
+  padding:12px 14px;margin:26px -18px -70px;border-top:1px solid var(--line);
+  background:rgba(11,17,25,.94);backdrop-filter:blur(12px)}
+.actionbar button{font:inherit;font-size:14px;padding:11px 20px;border-radius:11px;cursor:pointer;
+  border:1px solid var(--line2);background:#0F1B2B;color:var(--ink);display:flex;align-items:center;gap:8px}
+.actionbar button:hover{border-color:var(--amber);background:#132135}
+.actionbar button.go{border-color:var(--amber);background:var(--amber);color:#221703;font-weight:650}
+.actionbar svg{width:16px;height:16px;flex:none}
+
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(6,10,16,.72);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;padding:20px}
+.scrim.show{display:flex}
+.sheet{width:100%;max-width:520px;max-height:86vh;overflow:auto;border:1px solid var(--line2);
+  border-radius:18px;background:var(--panel);padding:24px}
+.sheet h3{margin:0 0 4px;font-size:19px;font-weight:650}
+.diag{border-radius:12px;padding:13px 15px;margin:0 0 16px;font-size:13.5px;line-height:1.5}
+.diag.ok{border:1px solid rgba(63,220,150,.35);background:rgba(63,220,150,.08);color:var(--green)}
+.diag.warn{border:1px solid rgba(255,180,58,.35);background:rgba(255,180,58,.08);color:var(--amber)}
+.diag b{display:block;margin-bottom:3px;font-size:14px}
+.diag span{color:var(--muted);display:block}
+.diag a{display:inline-block;margin-top:10px;padding:9px 16px;border-radius:9px;
+  background:var(--amber);color:#221703;font-weight:650;text-decoration:none;font-size:13.5px}
+.sheet p.lead{margin:0 0 18px;color:var(--muted);font-size:13.5px}
+.plat{border-top:1px solid var(--line);padding:14px 0}
+.plat.dim{opacity:.45}
+.plat:last-of-type{border-bottom:1px solid var(--line);margin-bottom:18px}
+.plat b{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
+.plat ol{margin:0;padding-left:19px;color:var(--muted);font-size:13.5px;line-height:1.7}
+.plat ol b{display:inline;color:var(--ink)}
+.sheet .close{width:100%;font:inherit;font-size:14px;padding:11px;border-radius:11px;cursor:pointer;
+  border:1px solid var(--amber);background:var(--amber);color:#221703;font-weight:650}
+
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);
+  font-size:12.5px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer b{color:var(--muted);font-weight:600}
+.roll{display:inline-block}
+.printhead{display:none}
+
+@media (max-width:1000px){ .headline{grid-template-columns:1fr} }
+@media (max-width:900px){
+  .periods{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .ladder{grid-template-columns:1fr 1fr}
+  .row.two,.row.three{grid-template-columns:1fr}
+  .cats{grid-template-columns:1fr}
+  .sched{grid-template-columns:repeat(3,1fr)}
+  .split{grid-template-columns:1fr}
+  .arrow{display:none}
+  .appbar,.actionbar{margin-left:-18px;margin-right:-18px}
+  .phead{display:none}
+  .prow{grid-template-columns:1fr 42px;gap:8px;padding:12px 2px}
+  .prow .datecell{grid-column:1}
+  .prow .basiccell{grid-column:1}
+  .prow .span{grid-column:1;text-align:left}
+  .prow .del{grid-column:2;grid-row:1}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{
+  @page{margin:14mm}
+  body{background:#fff;color:#000;font-size:11.5pt}
+  .wrap{max-width:100%;padding:0}
+  .tools,.gridline,.sweep,.appbar,.badge,.actionbar,.scrim,.toprow,.del{display:none!important}
+  .printhead{display:block;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #000}
+  .printhead h2{margin:0 0 4px;font-size:16pt}
+  .printhead div{font-size:10pt;color:#333}
+  .mast,.card,.period,.hero,.kpi,.inst,.mini,details{border-color:#999;background:#fff;box-shadow:none!important}
+  .mast{padding:0 0 12px;border:none;border-bottom:1px solid #999;border-radius:0}
+  .mast p{color:#333}
+  .rung,.mini,.kpi,.inst{background:#f6f6f6}
+  .rung span,.hero .lab,.hero .sub,.kpi span,.mini span,.shead em,.span{color:#444}
+  .hero .big,h1,h2{color:#000}
+  .hero.gain .big,.hero.arr .big,.hero.sum .big{color:#000}
+  .headline,.periods{grid-template-columns:repeat(3,1fr)}
+  .kpis{grid-template-columns:repeat(4,1fr)}
+  .sched{grid-template-columns:repeat(6,1fr)}
+  .prow{grid-template-columns:150px 1fr 96px}
+  select,input{border:none;background:none;color:#000;padding:2px 0;
+    -webkit-appearance:none;appearance:none;font-weight:600}
+  details{border:1px solid #999} details summary{display:none}
+  .cat{border-color:#999;background:#fff;box-shadow:none!important}
+  .cat[aria-pressed="true"]{border:2px solid #000}
+  .cat[aria-pressed="true"] b{color:#000}
+  .cat span{color:#444}
+  section,.headline,table,details,.periods{break-inside:avoid}
+  footer{border-top:1px solid #999;color:#333}
+  footer b{color:#000}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="appbar" id="appbar">
+    <div class="msg" id="appbarMsg"></div>
+    <button id="btnInstall">Install</button>
+    <button class="ghost" id="btnDismiss">Not now</button>
+  </div>
+
+  <div class="printhead">
+    <h2>Dearness Allowance and arrears — APGENCO Revised Pay Scales, 2022</h2>
+    <div id="printMeta"></div>
+  </div>
+
+  <header class="mast">
+    <div class="gridline"></div>
+    <div class="toprow"><span class="badge" id="netBadge">Ready offline</span></div>
+    <h1>Dearness Allowance and arrears, RPS 2022</h1>
+    <p>Enter the basic pay you drew from January 2025, then add a line for every date it changed — annual increment, SGP or SAPP, promotion, anything. The months are counted from those dates, so a change in the middle of a period is handled on its own.</p>
+    <div class="refs">
+      <span class="ref">Pay scales · <b>G.O.O. 132/JS(Per)/2023</b> dt. 23.08.2023</span>
+      <span class="ref">DA 2025 · <b>G.O.O. 167/JS(Per)/2026</b> dt. 07.09.2026</span>
+      <span class="ref">DA 2026 · <b>G.O.O. 168/JS(Per)/2026</b> dt. 07.09.2026</span>
+    </div>
+    <div class="ladder">
+      <div class="rung"><span>Up to 31.12.2024</span><strong>14.07%</strong></div>
+      <div class="rung"><span>From 01.01.2025</span><strong>16.02%</strong><small>+1.95</small></div>
+      <div class="rung"><span>From 01.07.2025</span><strong>17.65%</strong><small>+1.63</small></div>
+      <div class="rung now"><span>From 01.01.2026</span><strong>19.27%</strong><small>+1.62</small></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="shead"><h2>Employee category</h2><em>Master Scale is common; grade ranges differ</em></div>
+    <div class="cats">
+      <button class="cat" aria-pressed="true" data-cat="wm">
+        <b>Workmen</b><span>Annexure-II — O&amp;M, construction, security &amp; fire staff</span>
+      </button>
+      <button class="cat" aria-pressed="false" data-cat="otw">
+        <b>Other than Workmen</b><span>Annexure-I — office staff and above</span>
+      </button>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Your scale</h2><em>Revised scales, 2022</em></div>
+    <div class="card">
+      <div class="row three">
+        <label class="f"><span>Grade</span><select id="grade"></select></label>
+        <label class="f"><span>Scale under AAS</span><select id="stype"></select></label>
+        <label class="f"><span>Scale range</span><input type="text" id="range" readonly></label>
+      </div>
+      <div class="row two" style="margin-top:14px">
+        <label class="f"><span>Employee name (optional, for the printout)</span><input type="text" id="empName" placeholder="Name"></label>
+        <label class="f"><span>Designation and employee number (optional)</span><input type="text" id="empDesg" placeholder="Designation, Emp. No."></label>
+      </div>
+      <p class="hint">If your pay sits beyond the scale as Personal Pay, switch on manual entry and type the figures instead.</p>
+      <div class="tools">
+        <button class="act" id="btnManual" aria-pressed="false">Type basic pay instead of picking it</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Basic pay and the dates it changed</h2><em id="rowsHint">One line per change</em></div>
+    <div class="card">
+      <div class="phead">
+        <div>Effective from</div><div>Basic pay</div><div style="text-align:right">Runs for</div><div></div>
+      </div>
+      <div id="payRows"></div>
+      <div class="tools">
+        <button class="act" id="btnAdd">Add a pay change</button>
+        <button class="act" id="btnQuick">Fill from a yearly increment</button>
+      </div>
+      <p class="hint">Add a line for every date the basic pay changed between January 2025 and August 2026 — the annual increment, an SGP or SAPP fixation with more than one increment, a promotion, a stagnation increment. Nothing is assumed; whatever you enter is what gets counted, month by month.</p>
+      <div class="warnbox" id="warnbox">
+        <b>Check these lines before you rely on the figures</b>
+        <ul id="warnlist"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>The three DA periods</h2><em>Worked out from the dates above</em></div>
+    <div class="periods">
+      <div class="period p1">
+        <div class="pnum">Period 1</div>
+        <div class="pfrom">01.01.2025 – 30.06.2025</div>
+        <div class="pdiff">Difference 1.95% · 14.07 → 16.02</div>
+        <div id="lines1"></div>
+        <div class="pout"><span>Arrear for this period</span><b id="o1">₹0</b></div>
+      </div>
+      <div class="period p2">
+        <div class="pnum">Period 2</div>
+        <div class="pfrom">01.07.2025 – 31.12.2025</div>
+        <div class="pdiff">Difference 3.58% · 14.07 → 17.65</div>
+        <div id="lines2"></div>
+        <div class="pout"><span>Arrear for this period</span><b id="o2">₹0</b></div>
+      </div>
+      <div class="period p3">
+        <div class="pnum">Period 3</div>
+        <div class="pfrom">01.01.2026 – 31.08.2026</div>
+        <div class="pdiff">Difference 5.20% · 14.07 → 19.27</div>
+        <div id="lines3"></div>
+        <div class="pout"><span>Arrear for this period</span><b id="o3">₹0</b></div>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="act primary" id="btnCalc">Show my DA and arrears</button>
+      <button class="act" id="btnPrint">Print or save as PDF</button>
+    </div>
+  </section>
+
+  <section id="results">
+    <div class="shead"><h2 id="whoLine">Your DA position</h2><em id="scaleLine"></em></div>
+    <div class="headline">
+      <div class="hero gain">
+        <div class="sweep" id="sweep1"></div>
+        <div class="lab">Dearness Allowance from September 2026</div>
+        <div class="big">₹<span class="roll" id="rDaNew">0</span></div>
+        <div class="sub">On basic pay of ₹<span id="rBasicNow">0</span> at 19.27%</div>
+        <div class="split">
+          <div class="mini"><span>You draw now, at 14.07%</span><b>₹<span id="rDaOld">0</span></b></div>
+          <div class="arrow">&rarr;</div>
+          <div class="mini"><span>Extra every month</span><b style="color:var(--amber)">₹<span id="rDaGain">0</span></b></div>
+        </div>
+      </div>
+      <div class="hero arr">
+        <div class="sweep" id="sweep2"></div>
+        <div class="lab">Arrears for January 2025 to August 2026</div>
+        <div class="big">₹<span class="roll" id="rTotal">0</span></div>
+        <div class="sub">Twenty months of the difference, paid in twelve instalments</div>
+        <div class="split">
+          <div class="mini"><span>Added to each pay bill</span><b style="color:var(--green)">₹<span id="rInst">0</span></b></div>
+          <div class="arrow">&rarr;</div>
+          <div class="mini"><span>From September 2026 to</span><b>Aug 2027</b></div>
+        </div>
+      </div>
+      <div class="hero sum">
+        <div class="sweep" id="sweep3"></div>
+        <div class="lab">Both together, in the September 2026 pay bill</div>
+        <div class="big">₹<span class="roll" id="rBoth">0</span></div>
+        <div class="sub">The higher DA plus the first arrears instalment</div>
+        <div class="split">
+          <div class="mini"><span>Higher DA</span><b>₹<span id="rBoth1">0</span></b></div>
+          <div class="arrow">+</div>
+          <div class="mini"><span>Arrears instalment</span><b>₹<span id="rBoth2">0</span></b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span>Arrears counted up to</span><b>31.08.2026</b></div>
+      <div class="kpi"><span>Months of arrears</span><b><span class="roll" id="rMonths">0</span></b></div>
+      <div class="kpi"><span>Extra in the September pay bill</span><b>₹<span class="roll" id="rSept">0</span></b></div>
+      <div class="kpi"><span>Extra over the next twelve months</span><b>₹<span class="roll" id="rYear">0</span></b></div>
+    </div>
+
+    <div class="shead" style="margin-top:26px"><h2>The three DA sanctions</h2><em>What each one adds every month, and the arrears it carries</em></div>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th>Sanctioned from</th><th>Rate added</th><th>Cumulative</th><th>Adds per month</th><th>Arrears it carries</th><th>Months in arrears</th></tr></thead>
+        <tbody id="sanctions"></tbody>
+        <tfoot><tr><td>All three</td><td>+5.20%</td><td>19.27%</td><td id="sfPer">₹0</td><td id="sfArr">₹0</td><td>20</td></tr></tfoot>
+      </table>
+    </div>
+
+    <div class="shead" style="margin-top:26px"><h2>How the arrears build up</h2><em>The rate changes on the G.O. dates, the basic pay on your own dates</em></div>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th>Stretch</th><th>Basic pay</th><th>Rate difference</th><th>Per month</th><th>Months</th><th>Arrear</th></tr></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot><tr><td colspan="5">Total arrears</td><td id="tfootTotal">₹0</td></tr></tfoot>
+      </table>
+    </div>
+
+    <div class="shead" style="margin-top:26px"><h2>Instalments</h2><em>September 2026 to August 2027</em></div>
+    <div class="sched" id="sched"></div>
+
+    <details>
+      <summary>Month by month, all twenty months</summary>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>Month</th><th>Basic pay</th><th>DA drawn at 14.07%</th><th>DA due</th><th>Difference</th></tr></thead>
+          <tbody id="ledger"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <div class="note">
+      <b>How this is worked out.</b> DA is calculated on basic pay only, excluding personal pay, and each month's figure is rounded to the nearest rupee. For every month the DA due at the revised rate is compared with the 14.07% already drawn, and the difference is the arrear for that month. From September 2026 the full 19.27% comes in the pay bill, so arrears stop at August 2026. Special pay, family planning incentive increments and personal pay granted as advance increments are not reckoned for DA.
+    </div>
+  </section>
+
+  <div class="actionbar">
+    <button id="btnInstall2" class="go">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></svg>
+      <span id="installLabel">Install app</span>
+    </button>
+    <button id="btnPrint2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+      Print everything
+    </button>
+  </div>
+
+  <footer>
+    <span>Prepared by <b>Lingam Sravan Kumar</b>, Junior Assistant, Dr. NTTPS</span>
+    <span>Figures are indicative. The pay bill drawn by the Pay Officer or Drawing Officer is final.</span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim">
+  <div class="sheet">
+    <h3>Put this on your home screen</h3>
+    <p class="lead">It then opens with its own icon, without the browser bar, and works with no internet.</p>
+    <div class="diag" id="diag"></div>
+    <div class="plat"><b>Android — Chrome</b>
+      <ol><li>Tap the <b>three dots</b> at the top right.</li>
+      <li>Choose <b>Add to Home screen</b> or <b>Install app</b>.</li>
+      <li>Tap <b>Install</b>.</li></ol></div>
+    <div class="plat"><b>iPhone and iPad — Safari</b>
+      <ol><li>Tap the <b>Share</b> button at the bottom.</li>
+      <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+      <li>Tap <b>Add</b>. Safari only, not Chrome.</li></ol></div>
+    <div class="plat"><b>Windows and Mac — Chrome or Edge</b>
+      <ol><li>Look for the <b>install icon</b> at the right of the address bar.</li>
+      <li>Or open the menu and choose <b>Install</b>.</li></ol></div>
+    <button class="close" id="sheetClose">Got it</button>
+  </div>
+</div>
+
+<script>
+/* ================= Single Master Scale, 2022 ================= */
+var MASTER=[29100,850,33350,1000,38350,1225,44475,1650,52725,2000,62725,2130,71245,2500,
+            86245,2900,100745,3350,117495,3725,136120,4155,156895,4550,179645,4850,
+            203895,5020,228995,5150,259895];
+function buildStages(){
+  var o=[MASTER[0]],c=MASTER[0];
+  for(var i=1;i<MASTER.length;i+=2){var r=MASTER[i],l=MASTER[i+1];while(c<l){c+=r;o.push(c);}}
+  return o;
+}
+var STAGES=buildStages();
+function between(a,b){return STAGES.filter(function(v){return v>=a&&v<=b;});}
+
+/* ================= Annexure I & II ================= */
+var SCALES={
+ wm:{label:"Workmen",grades:{
+  "I":{"Ordinary":[29100,92045],"SGP":[30800,97845],"SAPP-IA":[32500,104095],"SAPP-II":[34350,110795]},
+  "II":{"Ordinary":[30800,97845],"SGP":[32500,104095],"SAPP-IA":[34350,110795],"SAPP-II":[36350,117495]},
+  "III":{"Ordinary":[32500,104095],"SGP":[34350,110795],"SAPP-IA":[36350,117495],"SAPP-II":[38350,124945]},
+  "IV":{"Ordinary":[34350,110795],"SGP":[36350,117495],"SAPP-IA":[38350,124945],"SAPP-II":[40800,132395]},
+  "V":{"Ordinary":[36350,117495],"SGP":[38350,124945],"SAPP-IA":[40800,132395],"SAPP-II":[43250,140275]},
+  "VI":{"Ordinary":[38350,124945],"SGP":[40800,132395],"SAPP-IA":[43250,140275],"SAPP-II":[46125,148585]},
+  "VII":{"Ordinary":[40800,132395],"SGP":[43250,140275],"SAPP-IA":[46125,148585],"SAPP-II":[49425,156895]},
+  "VIII":{"Ordinary":[43250,152740],"SGP":[46125,161445],"SAPP-IA":[49425,170545],"SAPP-II":[52725,179645]},
+  "IX":{"Ordinary":[46125,156895],"SGP":[49425,165995],"SAPP-IA":[52725,175095],"SAPP-II":[56725,184495]},
+  "X":{"Ordinary":[54725,170545],"SGP":[58725,179645],"SAPP-IA":[62725,189345],"SAPP-II":[66985,199045]}}},
+ otw:{label:"Other than Workmen",grades:{
+  "I":{"Ordinary":[39575,121220],"SGP":[42025,128670],"SAPP-IA":[44475,136120],"SAPP-II":[47775,144430]},
+  "II":{"Ordinary":[71245,189345],"SGP":[76245,199045],"SAPP-IA":[81245,208915],"SAPP-II":[86245,218955]},
+  "III":{"Ordinary":[83745,203895],"SGP":[89145,213935],"SAPP-IA":[94945,223975],"SAPP-II":[100745,234145]},
+  "IV":{"Ordinary":[86245,208915],"SGP":[92045,218955],"SPP-IA":[97845,228995],"SPP-II":[104095,239295]},
+  "V":{"Ordinary":[104095,218955],"SGP":[110795,228995],"SAPP-IA":[117495,239295],"SAPP-II":[124945,249595]},
+  "VI":{"Ordinary":[117495,228995],"SGP":[124945,239295],"SAPP-IA":[132395,249595],"SAPP-II":[140275,259895]},
+  "VII":{"Ordinary":[128670,239295]},"VIII":{"Ordinary":[152740,254745]},
+  "IX":{"Ordinary":[156895,254745]},"X":{"Ordinary":[165995,259895]}}}
+};
+
+/* ================= rates and window ================= */
+var OLD_RATE=14.07;
+var PERIODS=[
+  {n:1,year:2025,first:1,last:6, rate:16.02},
+  {n:2,year:2025,first:7,last:12,rate:17.65},
+  {n:3,year:2026,first:1,last:8, rate:19.27}
+];
+var SANCTIONS=[
+  {from:"01.01.2025",add:1.95,cum:16.02,prev:OLD_RATE},
+  {from:"01.07.2025",add:1.63,cum:17.65,prev:16.02},
+  {from:"01.01.2026",add:1.62,cum:19.27,prev:17.65}
+];
+var MONTHS=["January","February","March","April","May","June",
+            "July","August","September","October","November","December"];
+var SHORT=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/* the twenty months, as a flat list */
+var WIN=[];
+for(var wm=1;wm<=12;wm++) WIN.push([2025,wm]);
+for(wm=1;wm<=8;wm++) WIN.push([2026,wm]);
+
+var cat="wm", manual=false;
+/* pay history: the first entry is fixed at Jan 2025, the rest are the user's change dates */
+var pay=[{y:2025,m:1,basic:"",fixed:true}];
+
+function $(id){return document.getElementById(id);}
+function fmt(n){return Math.round(n).toLocaleString('en-IN');}
+function stamp(y,m){return SHORT[m-1]+" "+y;}
+function key(y,m){return y*12+m;}
+function curRange(){return SCALES[cat].grades[$("grade").value][$("stype").value];}
+function rateFor(y,m){ if(y===2025) return m<=6?16.02:17.65; return 19.27; }
+
+/* ================= scale dropdowns ================= */
+function fillGrades(){
+  var g=$("grade"); g.innerHTML="";
+  var keys=Object.keys(SCALES[cat].grades);
+  for(var i=0;i<keys.length;i++){
+    var o=document.createElement("option"); o.value=keys[i]; o.textContent="Grade "+keys[i]; g.appendChild(o);
+  }
+  g.value=keys[0];
+  fillTypes();
+}
+function fillTypes(){
+  var t=$("stype"), gr=SCALES[cat].grades[$("grade").value]; t.innerHTML="";
+  var keys=Object.keys(gr);
+  for(var i=0;i<keys.length;i++){
+    var o=document.createElement("option"); o.value=keys[i]; o.textContent=keys[i]; t.appendChild(o);
+  }
+  t.value=keys[0];
+  fillRange();
+}
+function fillRange(){
+  var r=curRange(), list=between(r[0],r[1]);
+  $("range").value="\u20B9"+fmt(r[0])+" \u2013 \u20B9"+fmt(r[1])+"  ("+list.length+" stages)";
+  renderRows();
+}
+
+/* ================= the pay history rows ================= */
+function sortPay(){
+  pay.sort(function(a,b){ return key(a.y,a.m)-key(b.y,b.m); });
+}
+function spanOf(i){
+  /* how many of the twenty months this line covers */
+  var start=key(pay[i].y,pay[i].m);
+  var end=(i+1<pay.length) ? key(pay[i+1].y,pay[i+1].m)-1 : key(2026,8);
+  if(start<key(2025,1)) start=key(2025,1);
+  if(end>key(2026,8)) end=key(2026,8);
+  return Math.max(0,end-start+1);
+}
+function renderRows(){
+  sortPay();
+  var box=$("payRows"); box.innerHTML="";
+  var r=curRange(), list=between(r[0],r[1]);
+
+  for(var i=0;i<pay.length;i++){
+    (function(idx){
+      var p=pay[idx];
+      var row=document.createElement("div");
+      row.className="prow"+(p.fixed?" base":"");
+
+      /* effective-from */
+      var dc=document.createElement("div"); dc.className="datecell";
+      if(p.fixed){
+        dc.textContent="From Jan 2025";
+      } else {
+        var ms=document.createElement("select"), ys=document.createElement("select");
+        for(var k=0;k<12;k++){
+          var mo=document.createElement("option"); mo.value=k+1; mo.textContent=SHORT[k]; ms.appendChild(mo);
+        }
+        [2025,2026].forEach(function(yy){
+          var yo=document.createElement("option"); yo.value=yy; yo.textContent=yy; ys.appendChild(yo);
+        });
+        ms.value=p.m; ys.value=p.y;
+        function fixDate(){
+          var yy=Number(ys.value), mm=Number(ms.value);
+          if(key(yy,mm)<key(2025,2)){ yy=2025; mm=2; }
+          if(key(yy,mm)>key(2026,8)){ yy=2026; mm=8; }
+          p.y=yy; p.m=mm;
+          renderRows(); live();
+        }
+        ms.addEventListener("change",fixDate);
+        ys.addEventListener("change",fixDate);
+        dc.appendChild(ms); dc.appendChild(ys);
+      }
+      row.appendChild(dc);
+
+      /* basic pay */
+      var bc=document.createElement("div"); bc.className="basiccell";
+      if(manual){
+        var inp=document.createElement("input");
+        inp.type="number"; inp.min="0"; inp.step="5"; inp.placeholder="Basic pay";
+        inp.value=p.basic;
+        inp.addEventListener("input",function(){ p.basic=inp.value; live(); });
+        bc.appendChild(inp);
+      } else {
+        var sel=document.createElement("select");
+        var ph=document.createElement("option"); ph.value=""; ph.textContent="Select basic pay"; sel.appendChild(ph);
+        for(var j=0;j<list.length;j++){
+          var o=document.createElement("option");
+          o.value=list[j];
+          o.textContent="\u20B9"+fmt(list[j])+"  \u00B7  stage "+(j+1);
+          sel.appendChild(o);
+        }
+        sel.value = (list.indexOf(Number(p.basic))>=0) ? String(p.basic) : "";
+        if(sel.value==="") p.basic="";
+        sel.addEventListener("change",function(){ p.basic=sel.value; live(); });
+        bc.appendChild(sel);
+      }
+      row.appendChild(bc);
+
+      /* span */
+      var sp=document.createElement("div"); sp.className="span";
+      var n=spanOf(idx);
+      sp.textContent = n ? n+(n===1?" month":" months") : "\u2014";
+      row.appendChild(sp);
+
+      /* delete */
+      var del=document.createElement("button");
+      del.className="del"+(p.fixed?" hidden":"");
+      del.type="button"; del.textContent="\u00D7"; del.title="Remove this line";
+      del.addEventListener("click",function(){
+        pay.splice(idx,1); renderRows(); live();
+      });
+      row.appendChild(del);
+
+      box.appendChild(row);
+    })(i);
+  }
+  $("rowsHint").textContent = pay.length===1
+    ? "One basic pay for all twenty months"
+    : pay.length+" lines \u00B7 "+(pay.length-1)+" change"+(pay.length>2?"s":"");
+}
+
+function addRow(){
+  /* drop the new line one month after the last one, inside the window */
+  var lastK=key(pay[pay.length-1].y,pay[pay.length-1].m);
+  var nk=Math.min(lastK+1,key(2026,8));
+  var y=Math.floor((nk-1)/12), m=nk-y*12;
+  if(m===0){ m=12; y--; }
+  pay.push({y:y,m:m,basic:pay[pay.length-1].basic,fixed:false});
+  renderRows(); live();
+}
+
+/* quick start for the ordinary case: one increment a year, one stage each */
+function quickFill(){
+  var mth=prompt("Which month is your annual increment? Type 1 for January up to 12 for December.","1");
+  if(mth===null) return;
+  var incM=Math.max(1,Math.min(12,Number(mth)||1));
+  var r=curRange(), list=between(r[0],r[1]);
+  var base=Number(pay[0].basic||0);
+  var start=list.indexOf(base);
+
+  pay=[{y:2025,m:1,basic:pay[0].basic,fixed:true}];
+  [2025,2026].forEach(function(y){
+    if(key(y,incM)>=key(2025,2) && key(y,incM)<=key(2026,8))
+      pay.push({y:y,m:incM,basic:"",fixed:false});
+  });
+  if(start>=0){
+    for(var i=1;i<pay.length;i++)
+      pay[i].basic = String(list[Math.min(list.length-1,start+i)]);
+  }
+  renderRows(); live();
+}
+
+/* ================= the month ledger ================= */
+function basicAt(y,m){
+  var k=key(y,m), v=0;
+  for(var i=0;i<pay.length;i++){
+    if(key(pay[i].y,pay[i].m)<=k) v=Number(pay[i].basic||0);
+  }
+  return v;
+}
+function buildLedger(){
+  var out=[];
+  for(var p=0;p<PERIODS.length;p++){
+    var P=PERIODS[p];
+    for(var m=P.first;m<=P.last;m++){
+      var b=basicAt(P.year,m);
+      var daOld=Math.round(b*OLD_RATE/100);
+      var daNew=Math.round(b*P.rate/100);
+      out.push({y:P.year,m:m,p:P.n,basic:b,rate:P.rate,daOld:daOld,daNew:daNew,diff:daNew-daOld});
+    }
+  }
+  return out;
+}
+function groupRuns(rows){
+  var out=[];
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], last=out[out.length-1];
+    if(last && last.basic===r.basic && last.rate===r.rate){
+      last.months++; last.to=[r.y,r.m]; last.amount+=r.diff;
+    } else {
+      out.push({basic:r.basic,rate:r.rate,per:r.diff,months:1,
+                from:[r.y,r.m],to:[r.y,r.m],amount:r.diff,p:r.p});
+    }
+  }
+  return out;
+}
+function sanctionSplit(rows){
+  var out=[];
+  for(var k=0;k<SANCTIONS.length;k++) out.push({amount:0,months:0});
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i], b=r.basic;
+    if(!b) continue;
+    for(k=0;k<SANCTIONS.length;k++){
+      var S=SANCTIONS[k];
+      if(r.rate+0.0001 < S.cum) continue;
+      out[k].amount += Math.round(b*S.cum/100)-Math.round(b*S.prev/100);
+      out[k].months++;
+    }
+  }
+  return out;
+}
+
+/* ================= live view ================= */
+function live(){
+  var rows=buildLedger(), runs=groupRuns(rows), tot=[0,0,0,0];
+  for(var i=0;i<rows.length;i++) tot[rows[i].p]+=rows[i].diff;
+  var r0=curRange(), list=between(r0[0],r0[1]);
+
+  for(var p=1;p<=3;p++){
+    var box=$("lines"+p); box.innerHTML="";
+    for(i=0;i<runs.length;i++){
+      var run=runs[i]; if(run.p!==p) continue;
+      (function(rr){
+        var d=document.createElement("div"); d.className="pline";
+
+        var head=document.createElement("div"); head.className="plhead";
+        var a=document.createElement("span");
+        a.textContent=stamp(rr.from[0],rr.from[1])+" \u2013 "+stamp(rr.to[0],rr.to[1]);
+        var mo=document.createElement("em");
+        mo.textContent=rr.months+(rr.months===1?" month":" months");
+        head.appendChild(a); head.appendChild(mo);
+        d.appendChild(head);
+
+        var ctl;
+        if(manual){
+          ctl=document.createElement("input");
+          ctl.type="number"; ctl.min="0"; ctl.step="5"; ctl.placeholder="Basic pay";
+          ctl.value=rr.basic||"";
+        } else {
+          ctl=document.createElement("select");
+          var ph=document.createElement("option"); ph.value=""; ph.textContent="Select basic pay";
+          ctl.appendChild(ph);
+          for(var j=0;j<list.length;j++){
+            var o=document.createElement("option");
+            o.value=list[j];
+            o.textContent="\u20B9"+fmt(list[j])+"  \u00B7  stage "+(j+1);
+            ctl.appendChild(o);
+          }
+          ctl.value = (list.indexOf(Number(rr.basic))>=0) ? String(rr.basic) : "";
+        }
+        ctl.addEventListener("change",function(){ setStretch(rr.from[0],rr.from[1],ctl.value); });
+        d.appendChild(ctl);
+        box.appendChild(d);
+      })(run);
+    }
+    $("o"+p).textContent="\u20B9"+fmt(tot[p]);
+  }
+  checkSanity();
+}
+
+/* a change made in a period card is written back to the pay lines above */
+function setStretch(y,m,val){
+  var k=key(y,m), hit=null;
+  for(var i=0;i<pay.length;i++)
+    if(key(pay[i].y,pay[i].m)===k){ hit=pay[i]; break; }
+
+  if(hit){
+    hit.basic=String(val||"");
+  } else {
+    /* this stretch began at a DA-rate date, so it needs a pay line of its own */
+    pay.push({y:y,m:m,basic:String(val||""),fixed:false});
+    sortPay();
+  }
+  renderRows();
+  live();
+}
+
+/* the only impossible thing is pay falling as time moves forward */
+function checkSanity(){
+  var msgs=[];
+  for(var i=1;i<pay.length;i++){
+    var a=Number(pay[i-1].basic||0), b=Number(pay[i].basic||0);
+    if(a&&b&&b<a)
+      msgs.push("<b>"+stamp(pay[i].y,pay[i].m)+"</b>: the basic pay is lower than the line before it. Pay does not fall as time moves forward.");
+    if(key(pay[i].y,pay[i].m)===key(pay[i-1].y,pay[i-1].m))
+      msgs.push("<b>"+stamp(pay[i].y,pay[i].m)+"</b>: two lines start in the same month. Remove one of them.");
+  }
+  var blank=0;
+  for(i=0;i<pay.length;i++) if(!Number(pay[i].basic||0)) blank++;
+  if(blank && pay.length>1)
+    msgs.push(blank===1 ? "One line has no basic pay in it yet."
+                        : blank+" lines have no basic pay in them yet.");
+
+  var box=$("warnbox"), ul=$("warnlist");
+  if(msgs.length){ ul.innerHTML="<li>"+msgs.join("</li><li>")+"</li>"; box.classList.add("show"); }
+  else { ul.innerHTML=""; box.classList.remove("show"); }
+}
+
+/* ================= count-up ================= */
+function roll(el,to,dur){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){el.textContent=fmt(to);return;}
+  var t0=performance.now();
+  function step(t){
+    var pr=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-pr,3);
+    el.textContent=fmt(to*e);
+    if(pr<1) requestAnimationFrame(step); else el.textContent=fmt(to);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ================= calculate ================= */
+function calculate(){
+  var rows=buildLedger(), any=false, i;
+  for(i=0;i<rows.length;i++) if(rows[i].basic>0){ any=true; break; }
+  if(!any){ alert("Enter the basic pay you drew from January 2025 first."); return; }
+
+  var total=0, months=0;
+  for(i=0;i<rows.length;i++){ total+=rows[i].diff; if(rows[i].basic>0) months++; }
+
+  var nowBasic=rows[rows.length-1].basic;
+  var daOld=Math.round(nowBasic*OLD_RATE/100);
+  var daNew=Math.round(nowBasic*19.27/100);
+  var gain=daNew-daOld;
+  var base=Math.floor(total/12), last=total-base*11;
+
+  $("rDaOld").textContent=fmt(daOld);
+  $("rDaGain").textContent=fmt(gain);
+  $("rBasicNow").textContent=fmt(nowBasic);
+  $("rInst").textContent=fmt(base);
+  $("rBoth1").textContent=fmt(gain);
+  $("rBoth2").textContent=fmt(base);
+  roll($("rDaNew"),daNew,900);
+  roll($("rTotal"),total,900);
+  roll($("rBoth"),gain+base,900);
+  roll($("rMonths"),months,600);
+  roll($("rSept"),gain+base,900);
+  roll($("rYear"),gain*12+total,1000);
+
+  var runs=groupRuns(rows), tb=$("tbody"); tb.innerHTML="";
+  for(i=0;i<runs.length;i++){
+    var r=runs[i]; if(!r.basic) continue;
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+stamp(r.from[0],r.from[1])+" \u2013 "+stamp(r.to[0],r.to[1])+
+      "</td><td>\u20B9"+fmt(r.basic)+"</td><td>"+(r.rate-OLD_RATE).toFixed(2)+
+      "%</td><td>\u20B9"+fmt(r.per)+"</td><td>"+r.months+"</td><td>\u20B9"+fmt(r.amount)+"</td>";
+    tb.appendChild(tr);
+  }
+  $("tfootTotal").textContent="\u20B9"+fmt(total);
+
+  var sp=sanctionSplit(rows), sb=$("sanctions"); sb.innerHTML="";
+  var perTot=0;
+  for(i=0;i<SANCTIONS.length;i++){
+    var S=SANCTIONS[i];
+    var per=Math.round(nowBasic*S.cum/100)-Math.round(nowBasic*S.prev/100);
+    perTot+=per;
+    var tr2=document.createElement("tr"); tr2.className="sanc";
+    tr2.innerHTML="<td>"+S.from+"</td><td class=\"rate\">+"+S.add.toFixed(2)+
+      "%</td><td>"+S.cum.toFixed(2)+"%</td><td>\u20B9"+fmt(per)+
+      "</td><td>\u20B9"+fmt(sp[i].amount)+"</td><td>"+sp[i].months+"</td>";
+    sb.appendChild(tr2);
+  }
+  $("sfPer").textContent="\u20B9"+fmt(perTot);
+  $("sfArr").textContent="\u20B9"+fmt(total);
+
+  var lg=$("ledger"); lg.innerHTML="";
+  for(i=0;i<rows.length;i++){
+    var q=rows[i], tr3=document.createElement("tr");
+    tr3.innerHTML="<td>"+stamp(q.y,q.m)+"</td><td>\u20B9"+fmt(q.basic)+"</td><td>\u20B9"+
+      fmt(q.daOld)+"</td><td>\u20B9"+fmt(q.daNew)+"</td><td>\u20B9"+fmt(q.diff)+"</td>";
+    lg.appendChild(tr3);
+  }
+
+  var mlist=["Sep 2026","Oct 2026","Nov 2026","Dec 2026","Jan 2027","Feb 2027",
+             "Mar 2027","Apr 2027","May 2027","Jun 2027","Jul 2027","Aug 2027"];
+  var sc=$("sched"); sc.innerHTML="";
+  for(i=0;i<12;i++){
+    var d=document.createElement("div"); d.className="inst";
+    d.innerHTML="<span>"+mlist[i]+"</span><b>\u20B9"+fmt(i===11?last:base)+"</b>";
+    sc.appendChild(d);
+  }
+
+  var nm=$("empName").value.trim(), dg=$("empDesg").value.trim();
+  var who=[nm,dg].filter(Boolean).join(" \u00B7 ");
+  $("whoLine").textContent=who||"Your DA position";
+  $("scaleLine").textContent=SCALES[cat].label+", Grade "+$("grade").value+" "+$("stype").value+
+    " \u00B7 "+(pay.length-1)+" pay change"+(pay.length===2?"":"s")+" in the period";
+
+  $("results").classList.add("show");
+  var sws=["sweep1","sweep2","sweep3"];
+  for(i=0;i<3;i++){ var s=$(sws[i]); s.classList.remove("run"); void s.offsetWidth; s.classList.add("run"); }
+  $("results").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ================= printing ================= */
+function printAll(){
+  var d=document.querySelector("details");
+  if(d) d.setAttribute("open","open");
+  var bits=[];
+  var nm=$("empName").value.trim(), dg=$("empDesg").value.trim();
+  if(nm) bits.push(nm);
+  if(dg) bits.push(dg);
+  bits.push(SCALES[cat].label+", Grade "+$("grade").value+" "+$("stype").value);
+  var last=pay[pay.length-1].basic;
+  if(last) bits.push("Basic pay \u20B9"+fmt(last)+" from "+stamp(pay[pay.length-1].y,pay[pay.length-1].m));
+  var now=new Date();
+  bits.push("Printed "+String(now.getDate()).padStart(2,"0")+"."+
+            String(now.getMonth()+1).padStart(2,"0")+"."+now.getFullYear());
+  $("printMeta").textContent=bits.join("  \u00B7  ");
+  window.print();
+}
+
+/* ================= events ================= */
+var catBtns=document.querySelectorAll(".cat");
+for(var ci=0;ci<catBtns.length;ci++){
+  (function(b){
+    b.addEventListener("click",function(){
+      for(var j=0;j<catBtns.length;j++) catBtns[j].setAttribute("aria-pressed",catBtns[j]===b?"true":"false");
+      cat=b.getAttribute("data-cat");
+      fillGrades(); live();
+    });
+  })(catBtns[ci]);
+}
+$("grade").addEventListener("change",function(){ fillTypes(); live(); });
+$("stype").addEventListener("change",function(){ fillRange(); live(); });
+$("btnAdd").addEventListener("click",addRow);
+$("btnQuick").addEventListener("click",quickFill);
+$("btnCalc").addEventListener("click",calculate);
+$("btnPrint").addEventListener("click",printAll);
+$("btnPrint2").addEventListener("click",printAll);
+$("btnManual").addEventListener("click",function(){
+  manual=!manual;
+  $("btnManual").setAttribute("aria-pressed",manual?"true":"false");
+  $("btnManual").textContent = manual ? "Pick basic pay from the scale"
+                                      : "Type basic pay instead of picking it";
+  renderRows(); live();
+});
+
+fillGrades();
+live();
+
+/* ================= installable app behaviour ================= */
+(function(){
+  var bar=$("appbar"), msg=$("appbarMsg"), btnI=$("btnInstall"), btnD=$("btnDismiss"),
+      btnI2=$("btnInstall2"), label=$("installLabel"), scrim=$("scrim"),
+      sheetClose=$("sheetClose"), badge=$("netBadge");
+  var isFile=location.protocol==='file:';
+  var standalone=window.matchMedia('(display-mode: standalone)').matches||
+                 window.navigator.standalone===true;
+  var deferred=null, HIDE='daInstallHidden', dismissed=false;
+  try{ dismissed=sessionStorage.getItem(HIDE)==='1'; }catch(e){}
+
+  function showBar(html,withBtn){
+    msg.innerHTML=html; btnI.style.display=withBtn?'block':'none'; bar.classList.add('show');
+  }
+  function hideBar(){ bar.classList.remove('show'); }
+  btnD.addEventListener('click',function(){ try{sessionStorage.setItem(HIDE,'1');}catch(e){} hideBar(); });
+  function openSheet(){ scrim.classList.add('show'); }
+  function closeSheet(){ scrim.classList.remove('show'); }
+  sheetClose.addEventListener('click',closeSheet);
+  scrim.addEventListener('click',function(e){ if(e.target===scrim) closeSheet(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeSheet(); });
+
+  var ua=navigator.userAgent;
+  var isIOS=/iphone|ipad|ipod/i.test(ua);
+  var isAndroid=/android/i.test(ua);
+  var inApp=/(FBAN|FBAV|Instagram|Line\/|WhatsApp|; wv\)|GSA\/)/i.test(ua);
+  var secure=(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1');
+
+  function chromeIntent(){
+    return 'intent://'+location.href.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';
+  }
+  function paintDiag(){
+    var d=$("diag"); if(!d) return;
+    var plats=document.querySelectorAll('.plat');
+    function dimAll(){ for(var i=0;i<plats.length;i++) plats[i].classList.add('dim'); }
+    function lit(i){ dimAll(); if(plats[i]) plats[i].classList.remove('dim'); }
+    if(standalone){ d.className='diag ok';
+      d.innerHTML='<b>Already installed</b><span>You are running the installed app right now.</span>'; dimAll(); return; }
+    if(deferred){ d.className='diag ok';
+      d.innerHTML='<b>Ready to install</b><span>Tap Install app again and your browser will do it in one step.</span>'; dimAll(); return; }
+    if(isFile){ d.className='diag warn';
+      d.innerHTML='<b>This is a downloaded file, not a web address</b><span>A file opened from storage can never be installed. Ask for the https link, open that, and the Install button will do it in one tap.</span>'; dimAll(); return; }
+    if(!secure){ d.className='diag warn';
+      d.innerHTML='<b>This address is not secure</b><span>Installing needs an https address. Open the https version of this link.</span>'; dimAll(); return; }
+    if(inApp){ d.className='diag warn';
+      var h='<b>You opened this inside another app</b><span>WhatsApp and similar apps use a cut-down browser that cannot install. Open the same link in Chrome or Safari.</span>';
+      if(isAndroid) h+='<a href="'+chromeIntent()+'">Open in Chrome</a>';
+      d.innerHTML=h; dimAll(); return; }
+    if(isIOS){ d.className='diag warn';
+      d.innerHTML='<b>iPhone and iPad need two taps</b><span>Safari has no install button. Use Share, then Add to Home Screen.</span>'; lit(1); return; }
+    d.className='diag warn';
+    d.innerHTML='<b>Your browser has not offered an install yet</b><span>Chrome sometimes waits a few seconds on a first visit. Reload the page, or follow the steps below.</span>';
+    lit(isAndroid?0:2);
+  }
+  function doInstall(){
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; hideBar(); }); }
+    else { paintDiag(); openSheet(); }
+  }
+  btnI2.addEventListener('click',doInstall);
+  btnI.addEventListener('click',doInstall);
+
+  if(standalone){
+    label.textContent='Installed'; btnI2.classList.remove('go'); btnI2.disabled=true;
+    btnI2.style.opacity='.5'; btnI2.style.cursor='default';
+  }
+  if('serviceWorker' in navigator && !isFile){
+    window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+  }
+  function net(){
+    if(navigator.onLine){ badge.textContent='Ready offline'; badge.classList.remove('off'); }
+    else { badge.textContent='Offline \u2014 still working'; badge.classList.add('off'); }
+  }
+  window.addEventListener('online',net); window.addEventListener('offline',net); net();
+
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault(); deferred=e; label.textContent='Install app';
+    btnI2.classList.add('go'); closeSheet();
+    if(!standalone && !dismissed)
+      showBar('Put this on your home screen so it opens like an app and works without internet.',true);
+  });
+  window.addEventListener('appinstalled',function(){
+    hideBar(); closeSheet(); label.textContent='Installed';
+    btnI2.classList.remove('go'); btnI2.disabled=true;
+    btnI2.style.opacity='.5'; btnI2.style.cursor='default';
+  });
+  if(isFile && !dismissed){
+    showBar('This is running as a downloaded file, so it cannot install or stay offline. Open the shared web link instead, then add it to your home screen.',false);
+    badge.textContent='File mode'; badge.classList.add('off');
+  }
+  if(inApp && !isFile && !dismissed)
+    showBar('Opened inside another app. For install and offline use, open this link in Chrome or Safari.',false);
+  if(isIOS && !standalone && !isFile && !dismissed)
+    showBar('To keep this handy: tap <b>Share</b>, then <b>Add to Home Screen</b>.',false);
+})();
+</script>
+</body>
+</html>
