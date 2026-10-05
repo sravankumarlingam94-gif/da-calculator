@@ -1,5 +1,5 @@
 /* APGENCO DA Calculator — offline service worker */
-const CACHE = 'da-calc-v6';
+const CACHE = 'da-calc-v7';
 const ASSETS = [
   './',
   './index.html',
