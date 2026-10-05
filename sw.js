@@ -1,5 +1,5 @@
 /* APGENCO DA Calculator — offline service worker */
-const CACHE = 'da-calc-v5';
+const CACHE = 'da-calc-v6';
 const ASSETS = [
   './',
   './index.html',
@@ -7,7 +7,9 @@ const ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './icon-maskable-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './gate.js',
+  './vendor/supabase.js'
 ];
 
 self.addEventListener('install', e => {
@@ -30,6 +32,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
+  if (new URL(req.url).origin !== self.location.origin) return;
 
   e.respondWith(
     caches.match(req).then(hit => {
